@@ -16,7 +16,7 @@ const init = async () => {
     );
     const swaggerOption = {
         info: {
-            title: "Final Assignment"
+            title: "Booking System"
         }
     }
 

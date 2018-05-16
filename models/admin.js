@@ -16,7 +16,7 @@ module.exports = {
                
                     if(data.length == 0){
                         await con.query(`insert into admin(admin_name, admin_phone, admin_email, admin_password)
-                        values('admin1', '9478704255', 'admin1@gmail.com', 'abcdef')`);
+                        values('admin1', '9478704255', 'admin1@gmail.com', 'admin1')`);
                  
                 } 
             });
@@ -24,13 +24,13 @@ module.exports = {
             
                     if(data.length == 0){
                         await con.query(`insert into admin(admin_name, admin_phone, admin_email, admin_password)
-                        values('admin2', '7986511877', 'admin2@gmail.com', 'abcdef')`);  
+                        values('admin2', '7986511877', 'admin2@gmail.com', 'admin2')`);  
                     } 
                
             }) 
             
         } catch (error) {
-            console.log(error);
+            console.log("Admin",error);
             boom.badData('admin table error');
         }
       

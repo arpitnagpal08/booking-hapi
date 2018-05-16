@@ -9,9 +9,9 @@ const dbName = "expressdb";
 function initDb(){
     mongoClient.connect(url, (err, client) => {
         
-        if(err) throw err;
+        if(err) console.log(err);
 
-        console.log("Connected to database");
+        console.log("Connected to MongoDB");
 
         const databaseName = client.db(dbName);
         global.dataBase = databaseName;

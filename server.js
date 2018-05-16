@@ -38,7 +38,7 @@ const init = async () => {
         console.log(err),
             process.exit(1);
     }
-    console.log(`server running at ${server.info.uri}`);
+    console.log(`server running at ${server.info.uri}/documentation`);
 }
 
 init();

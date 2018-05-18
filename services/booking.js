@@ -2,7 +2,7 @@ const object_id = require("mongodb").ObjectID;
 
 let insertBooking = async (id, data) => {
     return new Promise((resolve, reject) => {
-        con.query(`insert into booking(booking_title, seat, customer_address_id, destination_latitude, destination_longitude) values('${data.title}', '${data.seat}', '${data.source_id}', '${data.destination_latitude}', '${data.destination_longitude}')`, (err, result) => {
+        con.query(`insert into booking(booking_title, seat, customer_address_id, destination_latitude, destination_longitude, price) values('${data.title}', '${data.seat}', '${data.source_id}', '${data.destination_latitude}', '${data.destination_longitude}', '49')`, (err, result) => {
             if (err) reject({
                 statusCode: 400,
                 message: "Unkown Source Id"

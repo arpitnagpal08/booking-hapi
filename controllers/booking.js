@@ -37,13 +37,13 @@ async function getBooking(req){
                         source_longitude: element.longitude,
                         destination_latitude: element.destination_latitude,
                         destination_longitude: element.destination_longitude,
+                        price: element.price,
                         customer_details: {
                             name: element.customer_name,
                             email: element.customer_email,
                             phone: element.customer_phone
                         }
                     }
-                    bookings.push(getBookings);
                 });
                 return bookings;
             }
@@ -61,6 +61,7 @@ async function getBooking(req){
                     source_longitude: element.longitude,
                     destination_latitude: element.destination_latitude,
                     destination_longitude: element.destination_longitude,
+                    price: element.price,
                     customer_details: {
                         name: element.customer_name,
                         email: element.customer_email,

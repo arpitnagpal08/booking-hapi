@@ -10,6 +10,7 @@ module.exports = {
                 customer_address_id int,
                 destination_latitude float,
                 destination_longitude float,
+                price int,
                 date timestamp default current_timestamp,
                 driver_id int,
                 primary key(booking_id),

@@ -32,12 +32,14 @@ async function getBooking(req){
                 let bookings = [];
                 getSearchBookings.forEach(element => {
                     let getBookings = {
+                        booking_id: element.booking_id,
                         booking_title: element.booking_title,
                         source_latitude: element.latitude,
                         source_longitude: element.longitude,
                         destination_latitude: element.destination_latitude,
                         destination_longitude: element.destination_longitude,
                         price: element.price,
+                        status: element.status,
                         customer_details: {
                             name: element.customer_name,
                             email: element.customer_email,
@@ -56,12 +58,14 @@ async function getBooking(req){
             let bookings = [];
             getBook.forEach(element => {
                 let getBookings = {
+                    booking_id: element.booking_id,
                     booking_title: element.booking_title,
                     source_latitude: element.latitude,
                     source_longitude: element.longitude,
                     destination_latitude: element.destination_latitude,
                     destination_longitude: element.destination_longitude,
                     price: element.price,
+                    status: element.status,
                     customer_details: {
                         name: element.customer_name,
                         email: element.customer_email,
@@ -96,9 +100,24 @@ async function updateBooking(req){
     }
 }
 
+async function cancelBooking(req){
+    try{
+        let verifyToken = jwt.verify(req.headers.token, 'secretKey');
+        let cancelBooking = await services.bookingServices.cancelBooking(verifyToken, req.payload.booking_id);
+        return {
+            statusCode: 200,
+            message: "Booking cancled",
+            data: cancelBooking
+        }
+    }catch(error){
+        return error
+    }
+}
+
 
 module.exports = {
     insertBooking,
     getBooking,
-    updateBooking
+    updateBooking,
+    cancelBooking
 }

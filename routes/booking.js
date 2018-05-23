@@ -56,6 +56,26 @@ let booking = (server) => {
         }
     })
 
+    server.route({
+        method: "POST",
+        path: "/booking/cancel",
+        handler: function(req, res){
+            return controller.bookingController.cancelBooking(req);
+        },
+        config: {
+            description: "Cancel Booking",
+            tags: ["api", "booking"],
+            validate: {
+                payload: {
+                    booking_id: joi.number().required()
+                },
+                headers: joi.object({
+                    'token': joi.string().required()
+                }).unknown()
+            }
+        }
+    })
+
 }
 
 module.exports = booking;

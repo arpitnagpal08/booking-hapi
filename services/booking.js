@@ -2,7 +2,7 @@ const object_id = require("mongodb").ObjectID;
 
 let insertBooking = async (id, data) => {
     return new Promise((resolve, reject) => {
-        con.query(`insert into booking(booking_title, seat, customer_address_id, destination_latitude, destination_longitude, price) values('${data.title}', '${data.seat}', '${data.source_id}', '${data.destination_latitude}', '${data.destination_longitude}', '49')`, (err, result) => {
+        con.query(`insert into booking(booking_title, seat, customer_address_id, destination_latitude, destination_longitude, price, status) values('${data.title}', '${data.seat}', '${data.source_id}', '${data.destination_latitude}', '${data.destination_longitude}', '49', 'Booked')`, (err, result) => {
             if (err) reject({
                 statusCode: 400,
                 message: "Unkown Source Id"
@@ -59,11 +59,32 @@ let updateBooking = async () => {
 
 }
 
+let cancelBooking = async (cust_id, book_id) => {
+    return new Promise ((resolve, reject) => {
+        con.query(`select customer_address_id from customer_address where customer_id='${cust_id}'`, (err, result) => {
+            if(err) reject(err);
+            else{
+                for(let i = 0; i < result.length; i++){
+                    con.query(`update booking set status='Canceled', driver_id=NULL where booking_id='${book_id}' AND customer_address_id='${result[i].customer_address_id}'`, (err, res) => {
+                        if(err) reject(err);
+                        if(res.affectedRows == 1){
+                            resolve()
+                        }
+                        else{
+                            reject("Wrong Booking Id");
+                        }
+                    })                    
+                }
+            }
+        })
+    })
+}
 
 
 module.exports = {
     insertBooking,
     getBooking,
     getSearchBookings,
-    updateBooking
+    updateBooking,
+    cancelBooking
 }

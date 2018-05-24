@@ -103,6 +103,30 @@ let customer = (server) => {
             }
         }
     })
+
+
+    /**
+     * --------------------
+     * CUSTOMER GET ADDRESS
+     * --------------------
+    */
+    server.route({
+        method: "GET",
+        path: "/customer/getAddresses",
+        handler: function (req, res){
+            return controllers.customerController.getAllAddresses(req);
+        },
+        config: {
+            description: "Get All Address",
+            tags: ["api", "customer"],
+            validate: {
+                headers: joi.object({
+                    "token": joi.string().required()
+                }).unknown()
+            }
+        }
+    })
+
 }
 
 

@@ -92,9 +92,26 @@ async function addAddress(data) {
     }
 }
 
+
+async function getAllAddresses(req){
+    try {
+        let verifyToken = await jwt.verify(req.headers.token, 'secretKey');
+        let getAllAddress = await services.customerServices.getAllAddresses(verifyToken);
+        return {
+            statusCode: 200,
+            message: "List of all the Addresses",
+            data: getAllAddress
+        }
+    } catch (error) {
+        return error;
+    }
+}
+
+
 module.exports = {
     signUp,
     login,
     verifyOtp,
-    addAddress
+    addAddress,
+    getAllAddresses
 }

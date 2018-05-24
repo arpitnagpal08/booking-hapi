@@ -52,11 +52,22 @@ let addAddress = (id, data) => {
     })
 }
 
+
+let getAllAddresses = (id) => {
+    return new Promise ((resolve, reject) => {
+        con.query(`select * from customer_address where customer_id='${id}'`, (err, result) => {
+            if(err) reject(err);
+            resolve(result);
+        })
+    })
+}
+
 module.exports = {
     checkEmail,
     register,
     login,
     checkOtp,
     updateAccount,
-    addAddress
+    addAddress,
+    getAllAddresses
 }

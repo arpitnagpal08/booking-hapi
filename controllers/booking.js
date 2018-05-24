@@ -91,6 +91,8 @@ async function updateBooking(req){
             message: "Booking Updated",
             data: {
                 seat: req.payload.seat,
+                source_latitude: updateBook.source_latitude,
+                source_longitude: updateBook.source_longitude,
                 destination_latitude: req.payload.destination_latitude,
                 destination_longitude: req.payload.destination_longitude
             }

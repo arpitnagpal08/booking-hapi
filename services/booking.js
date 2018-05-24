@@ -55,8 +55,18 @@ let getSearchBookings = async (id, search) => {
     })
 }
 
-let updateBooking = async () => {
-
+let updateBooking = async (cust_id, payload) => {
+    return new Promise((resolve, reject) => {
+        con.query(`update booking set seat='${payload.seat}', customer_address_id='${payload.source_id}', destination_latitude='${payload.destination_latitude}', destination_longitude='${payload.destination_longitude}' where booking_id='${payload.booking_id}'`, (err, result) => {
+            if(err) reject(err)
+            else{
+                con.query(`select latitude, longitude from customer_address where customer_id='${cust_id}' AND customer_address_id='${payload.source_id}'`, (err, resp) => {
+                    if(err) throw(err);
+                    resolve(resp);
+                })
+            }
+        })
+    })
 }
 
 let cancelBooking = async (cust_id, book_id) => {

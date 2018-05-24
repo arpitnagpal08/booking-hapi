@@ -9,9 +9,11 @@ let login = (email, password) => {
 
 let getAllCustomers = () => {
     return new Promise ((resolve, reject) => {
-        con.query(`select * from customer`, (err, result) => {
+        con.query(`select customer_name, customer_phone, customer_email, customer.is_verified, date as registration_date from customer`, (err, result) => {
             if(err) reject(err);
-            resolve(result);
+            else{
+                resolve(result)
+            }
         })
     })
 }

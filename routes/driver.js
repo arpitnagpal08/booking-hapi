@@ -52,6 +52,28 @@ let driver = (server) => {
         }
     })
 
+    /**
+     *-------------
+     * GET BOOKINGS
+     *-------------
+     */
+    server.route({
+        method: "POST",
+        path: "/driver/getBookings",
+        handler: function(req, res){
+            return controller.driverController.getBooking(req);
+        },
+        config: {
+            description: "Driver Get Bookings API",
+            tags: ["api", "driver"],
+            validate: {
+                headers: joi.object({
+                    "token": joi.string().required()
+                }).unknown()
+            }
+        }
+    })
+
 }
 
 module.exports = driver;

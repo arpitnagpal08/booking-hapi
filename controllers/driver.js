@@ -47,7 +47,42 @@ async function login(data){
     }
 }
 
+
+async function getBooking(req){
+    try {
+        let verifyToken = await jwt.verify(req.headers.token, 'secretKey');
+        let getBooking = await services.driverServices.getBooking(verifyToken);
+        let bookings = [];
+        getBooking.forEach(element => {
+            let getBooks = {
+                booking_id: element.booking_id,
+                booking_title: element.booking_title,
+                source_latitude: element.latitude,
+                source_longitude: element.longitude,
+                destination_latitude: element.destination_latitude,
+                destination_longitude: element.destination_longitude,
+                price: element.price,
+                status: element.status,
+                customer_details: {
+                    name: element.customer_name,
+                    email: element.customer_email,
+                    phone: element.customer_phone
+                }
+            }
+            bookings.push(getBooks);
+        });
+        return {
+            statusCode: 200,
+            message: "List of all the bookings you are assigned to",
+            date: bookings
+        }
+    } catch (error) {
+        return error   
+    }
+}
+
 module.exports = {
     signUp,
-    login
+    login,
+    getBooking
 }

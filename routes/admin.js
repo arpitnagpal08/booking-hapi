@@ -149,6 +149,27 @@ let admin = (server) => {
         }
     })
 
+    /**
+     * ----------------
+     * GET AVAIL DRIVER
+     * ----------------
+     */
+    server.route({
+        method: "GET",
+        path: "/admin/getAvailDriver",
+        handler: function(req, res) {
+            return controller.adminController.getAvailDriver(req);
+        },
+        config: {
+            description: "List of all the available drivers",
+            tags: ["api", "admin"],
+            validate: {
+                headers: joi.object({
+                    "token": joi.string().required()
+                }).unknown()
+            }
+        }
+    })
     
 }
 

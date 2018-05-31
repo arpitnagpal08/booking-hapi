@@ -81,8 +81,18 @@ async function getBooking(req){
     }
 }
 
+async function taskDone(req){
+    let verifyToken = await jwt.verify(req.headers.token, "secretKey");
+    let taskDone = services.driverServices.taskDone(verifyToken, req.payload.booking_id);
+    return {
+        statusCode: 200,
+        message: "Now you are available for another booking"
+    }
+}
+
 module.exports = {
     signUp,
     login,
-    getBooking
+    getBooking,
+    taskDone
 }

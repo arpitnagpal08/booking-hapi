@@ -74,6 +74,32 @@ let driver = (server) => {
         }
     })
 
+
+    /**
+     * -----------
+     * FREE DRIVER
+     * -----------
+     */
+    server.route({
+        method: "POST",
+        path: "/driver/taskDone",
+        handler: function(req, res) {
+            return controller.driverController.taskDone(req);
+        },
+        config: {
+            description: "Set Driver Free",
+            tags: ["api", "driver"],
+            validate: {
+                headers: joi.object({
+                    "token": joi.string().required()
+                }).unknown(),
+                payload: {
+                    "booking_id": joi.string().required()
+                }
+            }
+        }
+    })
+
 }
 
 module.exports = driver;

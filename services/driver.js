@@ -34,9 +34,33 @@ let getBooking = (id) => {
     })
 }
 
+let taskDone = (driver_id, booking_id) => {
+    return new Promise((resolve, reject) => {
+        con.query(`update driver set status=0 where driver_id=${driver_id}`, (err, resp) => {
+            if (err) reject(err);
+            else {
+                con.query(`update booking set driver_id=NULL where booking_id=${booking_id}`, async (err, result) => {
+                    let book_id = booking_id;
+                    let desc = "Task completed and Driver is now available";
+                    let date = `${new Date()}`;
+                    let log = {
+                        booking_id: book_id,
+                        desc: desc,
+                        date: date
+                    }
+                    const collection = dataBase.collection("log");
+                    let response = await collection.insertOne(log);
+                    resolve();
+                })
+            }
+        })
+    })
+}
+
 module.exports = {
     checkEmail,
     register,
     login,
-    getBooking
+    getBooking,
+    taskDone
 }

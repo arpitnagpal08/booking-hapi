@@ -8,7 +8,8 @@ module.exports = {
                 driver_phone varchar(15), 
                 driver_email varchar(40), 
                 driver_password varchar(20), 
-                date timestamp default current_timestamp, 
+                date timestamp default current_timestamp,
+                status int, 
                 PRIMARY KEY(driver_id)
                 );
          `) 

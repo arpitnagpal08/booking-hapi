@@ -32,7 +32,7 @@ let getSearchCustomer = (search) => {
 let getAllBookings = async() => {
     let response = [];
     return new Promise ( (resolve, reject) => {
-        con.query(`select * from booking b, customer_address ca, customer c, driver d where ca.customer_address_id=b.customer_address_id AND c.customer_id=ca.customer_id OR d.driver_id=b.driver_id order by booking_id DESC`, async (err, result) => {
+        con.query(`select DISTINCT * from booking b, customer_address ca, customer c where b.customer_address_id=ca.customer_address_id AND ca.customer_id=c.customer_id order by booking_id DESC`, async (err, result) => {
             if(err) reject(err);
             for(let i=0; i<result.length;i++){
                 let details = {
@@ -44,6 +44,7 @@ let getAllBookings = async() => {
                     source_address_longitude: result[i].longitude,
                     destination_latitude: result[i].destination_latitude,
                     destination_longitude: result[i].destination_longitude,
+                    driver_id: result[i].driver_id,
                     date: result[i].date,
                     customer_details: {
                         customer_name: result[i].customer_name,
@@ -124,19 +125,24 @@ let assignDriver = (data) => {
                     con.query(`update booking set driver_id=${data.driver_id} where booking_id=${data.booking_id}`, (err, result) => {
                         if(err) reject(err);
                         else{
-                            con.query(`select * from booking where booking_id=${data.booking_id}`, async (err, result) => {
+                            con.query(`select * from booking where booking_id=${data.booking_id}`, (err, result) => {
                                 if(err) reject(err);
                                 else{
-                                    let book_id = `${data.booking_id}`;
-                                    let desc = "Driver assigned";
-                                    let date = `${new Date()}`;
-                                    let log = {
-                                        booking_id: book_id,
-                                        desc: desc,
-                                        date: date
-                                    }
-                                    const collection = dataBase.collection("log");
-                                    let response = await collection.insertOne(log);
+                                    con.query(`update driver set status=1 where driver_id=${data.driver_id}`, async (err) => {
+                                        if(err) reject(err);
+                                        else{
+                                            let book_id = `${data.booking_id}`;
+                                            let desc = "Driver assigned";
+                                            let date = `${new Date()}`;
+                                            let log = {
+                                                booking_id: book_id,
+                                                desc: desc,
+                                                date: date
+                                            }
+                                            const collection = dataBase.collection("log");
+                                            let response = await collection.insertOne(log);
+                                        }
+                                    })
                                 }
                                 resolve(result);
                             })
@@ -168,6 +174,14 @@ let logSearch = async (id, search) => {
     return response
 }
 
+let getAvailDriver = async (id) => {
+    return new Promise ((resolve, reject) => {
+        con.query(`select driver_id, driver_name, driver_phone, driver_email from driver where status=0`, (err, result) => {
+            if(err) reject(err);
+            resolve(result);
+        })
+    })
+}
 
 module.exports = {
     login,
@@ -179,5 +193,6 @@ module.exports = {
     getSearchDriver,
     assignDriver,
     log,
-    logSearch
+    logSearch,
+    getAvailDriver
 }

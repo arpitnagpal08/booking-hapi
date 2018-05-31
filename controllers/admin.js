@@ -184,11 +184,27 @@ async function log(req){
     }
 }
 
+
+async function getAvailDriver(req){
+    try {
+        let verifyToken = await jwt.verify(req.headers.token, "adminSecretKey");
+        let getAvailDriver = await services.adminServices.getAvailDriver(verifyToken);
+        return {
+            statusCode: 200,
+            message: "List of available drivers",
+            data: getAvailDriver
+        }
+    } catch (err) {
+        return err;
+    }
+}
+
 module.exports = {
     adminLogin,
     getAllCustomers,
     getAllBookings,
     getAllDrivers,
     assignDriver,
-    log
+    log,
+    getAvailDriver
 }
